@@ -17,10 +17,10 @@ public class App
 //        userDaoJdbc.dropUsersTable();
 //        userDaoJdbc.saveUser(1, "Arlen", "Kurbanbaev", (byte)20);
 //        userDaoJdbc.addUser(2, "Sultan", "Bakirov", 41);
-//        userDaoJdbc.removeUserById(1);
-        userDaoJdbc.getAllUsers();
+//        userDaoJdbc.removeUserById(2);
+//        userDaoJdbc.getAllUsers();
 //        userDaoJdbc.cleanUsersTable();
-//        userDaoJdbc.existsByFirstName("Sultan");
+        userDaoJdbc.existsByFirstName("Sultan");
 
 //        userDaoJdbc.dropUsersTable();
 //        Database database = new Database();

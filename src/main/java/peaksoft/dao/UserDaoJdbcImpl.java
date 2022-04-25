@@ -2,7 +2,6 @@ package peaksoft.dao;
 
 import peaksoft.model.User;
 import peaksoft.util.Util;
-import peaksoft.util1.Database;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -86,24 +85,23 @@ public class UserDaoJdbcImpl implements UserDao{
     @Override
     public List<User> getAllUsers() {
         String sql = "SELECT * FROM users";
-        ArrayList<User> allStudents = new ArrayList<>();
+        ArrayList<User> users = new ArrayList<>();
         try (Connection connect = Util.connection();
              Statement statement = connect.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
-            while (resultSet.next()) {
-                User user = new User();
-                System.out.println(resultSet.getLong(1));
-                System.out.println(resultSet.getString(2));
-                System.out.println(resultSet.getString(3));
-                System.out.println(resultSet.getByte(4));
-                allStudents.add(user);
-                System.out.println(getAllUsers());
-            }
             System.out.println("All users...");
+            User user = new User();
+            while (resultSet.next()) {
+                user.setId(resultSet.getLong(1));
+                user.setName(resultSet.getString(2));
+                user.setLastName(resultSet.getString(3));
+                user.setAge(resultSet.getByte(4));
+                System.out.println(user);
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return allStudents;
+        return users;
     }
 
     @Override
@@ -125,13 +123,15 @@ public class UserDaoJdbcImpl implements UserDao{
             PreparedStatement preparedStatement = connect.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery(sql)){
             User user = new User();
-            preparedStatement.setString(2, firstName);
-            preparedStatement.executeUpdate();
             System.out.println("Success...");
-            if (firstName.equals(user.getName(resultSet.getString(2)))) {
-                return true;
-            } else {
-                return false;
+
+            while (resultSet.next()) {
+                preparedStatement.setString(2, firstName);
+                preparedStatement.executeUpdate();
+                user.setName(resultSet.getString(2));
+                if (firstName.equals(user.getName(resultSet.getString(2)))) {
+                    return true;
+                }
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
